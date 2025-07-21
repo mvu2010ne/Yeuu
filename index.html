@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chữ Rơi 3D + Tim</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: url('nen.jpg') no-repeat center center fixed;
+      background-size: cover;
+      perspective: 1000px;
+      font-family: Arial, sans-serif;
+    }
+
+    audio {
+      display: none;
+    }
+
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .falling {
+      position: absolute;
+      white-space: nowrap;
+      font-size: 28px;
+      animation: fall 10s linear infinite;
+      transform: rotateX(0deg) rotateY(0deg);
+      text-shadow: 0 0 10px black;
+      font-weight: bold;
+      animation-delay: var(--delay);
+      animation-duration: var(--duration);
+    }
+
+    @keyframes fall {
+      0% {
+        top: -50px;
+        transform: translateX(0) rotateY(0deg) rotateX(0deg);
+      }
+      25% {
+        transform: translateX(-100px) rotateY(180deg) rotateX(20deg);
+      }
+      50% {
+        transform: translateX(100px) rotateY(360deg) rotateX(-20deg);
+      }
+      75% {
+        transform: translateX(-80px) rotateY(540deg) rotateX(10deg);
+      }
+      100% {
+        top: 100vh;
+        transform: translateX(0) rotateY(720deg) rotateX(0deg);
+      }
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 24px;
+      animation: fall 8s linear infinite;
+      animation-delay: var(--delay);
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="nhac.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="container" id="scene"></div>
+
+  <script>
+    const scene = document.getElementById('scene');
+    const texts = [
+      "Minh Vũ yêu Hương", "Trái tim rung động", "Thật dịu dàng",
+      "Gió thổi qua tim", "Tình yêu màu hồng", "Nhớ em mỗi đêm",
+      "Đừng buông tay nhé", "Bên nhau mãi mãi", "Ánh mắt em", "Tim anh thuộc về em"
+    ];
+
+    // Màu chuyển đổi
+    const colors = ['#ff69b4', '#ff0000', '#ffa500', '#00ffcc', '#33ff33', '#9966ff'];
+
+    // Thêm ảnh nền phụ (ảnh 1-5.jpg)
+    for (let i = 1; i <= 5; i++) {
+      const img = document.createElement('img');
+      img.src = `${i}.jpg`;
+      img.style.position = 'absolute';
+      img.style.width = '150px';
+      img.style.height = 'auto';
+      img.style.top = `${Math.random() * 80 + 10}%`;
+      img.style.left = `${Math.random() * 80 + 10}%`;
+      img.style.opacity = '0.5';
+      img.style.zIndex = '0';
+      scene.appendChild(img);
+    }
+
+    // Tạo chữ rơi
+    for (let i = 0; i < 30; i++) {
+      const div = document.createElement('div');
+      div.className = 'falling';
+      div.innerText = texts[Math.floor(Math.random() * texts.length)];
+      div.style.left = Math.random() * 100 + 'vw';
+      div.style.setProperty('--delay', Math.random() * 5 + 's');
+      div.style.setProperty('--duration', 6 + Math.random() * 5 + 's');
+      scene.appendChild(div);
+    }
+
+    // Tạo tim rơi
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerText = '❤';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.setProperty('--delay', Math.random() * 5 + 's');
+      heart.style.setProperty('--duration', 4 + Math.random() * 4 + 's');
+      scene.appendChild(heart);
+    }
+
+    // Đổi màu chữ và tim mỗi 2 giây
+    setInterval(() => {
+      document.querySelectorAll('.falling, .heart').forEach(el => {
+        el.style.color = colors[Math.floor(Math.random() * colors.length)];
+      });
+    }, 2000);
+  </script>
+</body>
+</html>
